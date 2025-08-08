@@ -16,6 +16,10 @@ build:
 	bsdtar --null -cf - --format=newc @- | \
 	gzip > ../$(TARGET)
 
+decomp:
+	dd if=initramfs.img 2>/dev/null | gzip -cd | \
+		bsdtar -xf -
+
 clean:
 	rm -f $(TARGET)
 
