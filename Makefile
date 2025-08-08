@@ -4,7 +4,8 @@ ALL_FILES = $(shell find $(SRC_DIR))
 PREFIX = /boot
 
 TARGET_INSTALL = initramfs-linux-zen.img
-TARGET = initramfs.cpio.gz
+TARGET = initramfs.cpio
+# Fix naming (sufix)
 
 all: build
 
