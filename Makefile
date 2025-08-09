@@ -33,7 +33,7 @@ all: build
 
 build:
 	@echo "Building initramfs image: $(TARGET)"
-	@cd $(SRC_DIR) && \
+	@cd $(SRC_DIR) && set -e; \
 	find . -mindepth 1 -printf '%P\0' | sort -z | \
 	bsdtar --uid 0 --gid 0 --null -cnf - -T - | \
 	bsdtar --null -cf - --format=newc @- | \
@@ -50,6 +50,10 @@ clean:
 	@rm -f $(TARGET_BASE)*
 
 install:
+	@if [ ! -f "$(TARGET)" ]; then \
+		echo "Error: Target file '$(TARGET)' does not exist!"; \
+		exit 1; \
+	fi
 	@if [ -f $(PREFIX)/$(TARGET_INSTALL) ]; then \
 		echo "Backing up current initramfs to $(TARGET_FALLBACK)"; \
 		sudo mv -f $(PREFIX)/$(TARGET_INSTALL) $(PREFIX)/$(TARGET_FALLBACK); \
