@@ -49,7 +49,7 @@ decomp:
 	@$(DECOMPRESS_CMD) $(TARGET) | bsdtar -xf - -C $(DECOMP_DIR)
 
 clean:
-	@rm -f $(TARGET_BASE)* $(DECOMP_DIR)
+	@rm -rf $(TARGET_BASE)* $(DECOMP_DIR)
 
 install:
 	@if [ ! -f "$(TARGET)" ]; then \
