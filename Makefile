@@ -4,6 +4,7 @@ PREFIX := /boot
 TARGET_BASE := initramfs-linux-zen
 TARGET_INSTALL := $(TARGET_BASE).img
 TARGET_FALLBACK := $(TARGET_INSTALL:.img=-fallback.img)
+DECOMP_DIR := extracted_initramfs
 
 COMPRESS ?= gzip
 
@@ -43,11 +44,12 @@ decomp:
 	@if [ ! -f $(TARGET) ]; then \
 		echo "File $(TARGET) not found!"; exit 1; \
 	fi
-	@echo "Decompressing and extracting $(TARGET)..."
-	@$(DECOMPRESS_CMD) $(TARGET) | bsdtar -xf -
+	@mkdir -p $(DECOMP_DIR)
+	@echo "Decompressing and extracting $(TARGET) into $(DECOMP_DIR)..."
+	@$(DECOMPRESS_CMD) $(TARGET) | bsdtar -xf - -C $(DECOMP_DIR)
 
 clean:
-	@rm -f $(TARGET_BASE)*
+	@rm -f $(TARGET_BASE)* $(DECOMP_DIR)
 
 install:
 	@if [ ! -f "$(TARGET)" ]; then \
